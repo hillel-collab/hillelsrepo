@@ -2,3 +2,4 @@
 git restore- מחזיר קובץ לשמירה אחרונה
 git pull --ff-only - מקבל שינויים מהשרת
 git reset --soft HEAD~1 - מבטל שמירה אחרונה שעוד לא נשלחה
+git commit --amend -m "ההודעה הנכונה"
