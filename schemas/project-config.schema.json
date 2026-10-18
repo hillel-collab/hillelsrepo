@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://priority-ai-harness.local/schemas/project-config.schema.json",
+  "title": "Priority AI Harness Project Config",
+  "description": "Configuration for one logical Priority client with one or more server environments.",
+  "type": "object",
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "title": "Nested multi-environment client",
+      "required": ["clientSlug", "displayName", "clickup", "priorityEnvironments"]
+    },
+    {
+      "title": "Legacy flat single-environment client",
+      "required": ["clientName", "priorityEnvironment", "credentialProfile", "apiBaseUrl", "company"]
+    }
+  ],
+  "required": [
+    "developmentPrefix",
+    "customTablePrefix",
+    "customFieldPrefix",
+    "customProcedurePrefix",
+    "customFormPrefix",
+    "language",
+    "defaultBranch",
+    "localPaths",
+    "metadataCachePolicy",
+    "readBudget",
+    "sampleDataPolicy"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "clientName": {
+      "description": "Legacy flat folder-safe client identifier.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "clientSlug": {
+      "description": "Stable Latin-English client folder slug.",
+      "$ref": "#/$defs/slug"
+    },
+    "displayName": {
+      "description": "Human-readable ClickUp client/List name; Unicode and Hebrew are allowed.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "clickup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["listId"],
+      "properties": {
+        "listId": { "$ref": "#/$defs/clickupId" },
+        "lastVerifiedName": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "lastVerifiedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "priorityEnvironments": {
+      "description": "Named Priority server/company connections for this logical client. May be empty when the client has no direct server connection.",
+      "type": "object",
+      "minProperties": 0,
+      "additionalProperties": false,
+      "properties": {
+        "dev": { "$ref": "#/$defs/priorityConnection" },
+        "test": { "$ref": "#/$defs/priorityConnection" },
+        "qa": { "$ref": "#/$defs/priorityConnection" },
+        "sandbox": { "$ref": "#/$defs/priorityConnection" },
+        "prod": { "$ref": "#/$defs/priorityConnection" }
+      }
+    },
+    "priorityEnvironment": {
+      "description": "Priority environment name.",
+      "type": "string",
+      "enum": ["dev", "test", "qa", "sandbox", "prod"]
+    },
+    "credentialProfile": {
+      "description": "Credential Manager profile name used to find this client's Priority PAT token.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "apiBaseUrl": {
+      "description": "Priority OData base URL for the company.",
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "apiHeaders": {
+      "description": "Non-secret HTTP headers to include with Priority API calls.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9-]+$"
+      }
+    },
+    "wcfBaseUrl": {
+      "description": "Optional explicit Priority WCF DBIRun service URL. If omitted, tools derive candidates from apiBaseUrl.",
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "company": {
+      "description": "Priority company identifier.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_/-]+$",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "developmentPrefix": {
+      "description": "Main prefix for custom development objects.",
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*$",
+      "minLength": 2,
+      "maxLength": 16
+    },
+    "customTablePrefix": {
+      "$ref": "#/$defs/customPrefix"
+    },
+    "customFieldPrefix": {
+      "$ref": "#/$defs/customPrefix"
+    },
+    "customProcedurePrefix": {
+      "$ref": "#/$defs/customPrefix"
+    },
+    "customFormPrefix": {
+      "$ref": "#/$defs/customPrefix"
+    },
+    "language": {
+      "description": "Preferred language for generated specs and summaries.",
+      "type": "string",
+      "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+      "examples": ["he", "en", "en-US"]
+    },
+    "defaultBranch": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "localPaths": {
+      "description": "Readable per-client workspace paths. Relative paths resolve under the client folder.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metadata", "memory", "specs", "developments", "tests"],
+      "properties": {
+        "metadata": {
+          "$ref": "#/$defs/localPath"
+        },
+        "memory": {
+          "$ref": "#/$defs/localPath"
+        },
+        "specs": {
+          "$ref": "#/$defs/localPath"
+        },
+        "developments": {
+          "$ref": "#/$defs/localPath"
+        },
+        "tests": {
+          "$ref": "#/$defs/localPath"
+        }
+      }
+    },
+    "metadataCachePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preferLocal", "refreshAfterDays"],
+      "properties": {
+        "preferLocal": {
+          "type": "boolean"
+        },
+        "refreshAfterDays": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 365
+        }
+      }
+    },
+    "readBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["monthlyLimit", "warnAtPercent"],
+      "properties": {
+        "monthlyLimit": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warnAtPercent": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      }
+    },
+    "sampleDataPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "defaultTop",
+        "maxTopWithoutApproval",
+        "storeSamples",
+        "maskSensitiveFields"
+      ],
+      "properties": {
+        "defaultTop": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "maxTopWithoutApproval": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "storeSamples": {
+          "type": "boolean"
+        },
+        "maskSensitiveFields": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "clickupId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "priorityConnection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["credentialProfile", "apiBaseUrl", "company"],
+      "properties": {
+        "credentialProfile": { "$ref": "#/$defs/credentialProfile" },
+        "apiBaseUrl": { "$ref": "#/$defs/apiBaseUrl" },
+        "apiHeaders": {
+          "type": "object",
+          "additionalProperties": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "propertyNames": { "pattern": "^[A-Za-z0-9-]+$" }
+        },
+        "wcfBaseUrl": { "type": "string", "pattern": "^https://" },
+        "company": { "$ref": "#/$defs/company" }
+      }
+    },
+    "credentialProfile": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "apiBaseUrl": { "type": "string", "pattern": "^https://" },
+    "company": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_/-]+$",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "customPrefix": {
+      "description": "Uppercase Priority object prefix, usually ending with an underscore.",
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*_$",
+      "minLength": 3,
+      "maxLength": 24
+    },
+    "localPath": {
+      "description": "Relative local path inside the client folder.",
+      "type": "string",
+      "pattern": "^[^<>:\"|?*]+$",
+      "not": { "pattern": "(^|[\\\\/])\\.\\.([\\\\/]|$)" },
+      "minLength": 1,
+      "maxLength": 160
+    }
+  }
+}

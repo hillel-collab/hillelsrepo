@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://priority-ai-harness.local/schemas/clickup-config.schema.json",
+  "title": "Priority Harness ClickUp Configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["workspaceId", "clientTasksSpaceId", "clientTasksSpaceName"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "workspaceId": { "type": "string", "pattern": "^[0-9]+$" },
+    "clientTasksSpaceId": { "type": "string", "pattern": "^[0-9]+$" },
+    "clientTasksSpaceName": { "type": "string", "minLength": 1, "maxLength": 200 }
+  }
+}

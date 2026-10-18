@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://priority-ai-harness.local/schemas/development.schema.json",
+  "title": "Priority Harness Development Mapping",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["developmentId", "displayName", "targetEnvironments"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "developmentId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$", "maxLength": 120 },
+    "displayName": { "type": "string", "minLength": 1, "maxLength": 300 },
+    "clickupTaskId": { "type": "string", "pattern": "^[A-Za-z0-9_-]+$", "maxLength": 120 },
+    "targetEnvironments": {
+      "type": "array",
+      "minItems": 0,
+      "uniqueItems": true,
+      "items": { "enum": ["dev", "test", "qa", "sandbox", "prod"] }
+    }
+  }
+}

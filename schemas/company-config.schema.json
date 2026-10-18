@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://priority-ai-harness.local/schemas/company-config.schema.json",
+  "title": "Priority Harness Company Configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["companySlug", "displayName", "clickup"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "companySlug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$", "maxLength": 80 },
+    "displayName": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "clickup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["folderId"],
+      "properties": {
+        "folderId": { "type": "string", "pattern": "^[A-Za-z0-9_-]+$" },
+        "lastVerifiedName": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "lastVerifiedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}
