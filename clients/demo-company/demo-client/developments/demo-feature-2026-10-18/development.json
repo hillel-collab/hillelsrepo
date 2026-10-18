@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../../../schemas/development.schema.json",
+  "developmentId": "demo-feature-2026-10-18",
+  "displayName": "Demo feature for practice",
+  "clickupTaskId": "00000",
+  "targetEnvironments": ["dev"]
+}
