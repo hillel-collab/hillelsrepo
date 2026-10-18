@@ -7,3 +7,4 @@ git switch -c NAME - יוצר ענף חדש ועובר אליו
 git branch - מראה את הענפים ואיפה אני
 git branch -d NAME- מוחק ענף שכבר מוזג
 git fetch --prune- מנקה ענפים שנמחקו בשרת
+git log --format="%h %an %ad %s" --date=short - היסטוריה עם שם ותאריך
