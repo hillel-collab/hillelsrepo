@@ -13,21 +13,13 @@
         "Accept": "application/json"
       },
       "company": "demo"
-    },
-    "prod": {
-      "credentialProfile": "company-client-prod",
-      "apiBaseUrl": "https://example.priority-software.com/odata/Priority/tabula.ini/company",
-      "apiHeaders": {
-        "Accept": "application/json"
-      },
-      "company": "COMPANY"
     }
   },
-  "developmentPrefix": "DEMO_",
-  "customTablePrefix": "XX_",
-  "customFieldPrefix": "XX_",
-  "customProcedurePrefix": "XX_",
-  "customFormPrefix": "XX_",
+  "developmentPrefix": "DEMO",
+  "customTablePrefix": "DEMO_",
+  "customFieldPrefix": "DEMO_",
+  "customProcedurePrefix": "DEMO_",
+  "customFormPrefix": "DEMO_",
   "language": "he",
   "defaultBranch": "main",
   "localPaths": {
