@@ -1,0 +1,8 @@
+{
+  "$schema": "../../schemas/company-config.schema.json",
+  "companySlug": "demo-company",
+  "displayName": "חברת דמה",
+  "clickup": {
+    "folderId": "00000"
+  }
+}

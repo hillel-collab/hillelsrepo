@@ -1,0 +1,54 @@
+{
+  "$schema": "../../../schemas/project-config.schema.json",
+  "clientSlug": "demo-client",
+  "displayName": "לקוח דמה",
+  "clickup": {
+    "listId": "00000"
+  },
+  "priorityEnvironments": {
+    "dev": {
+      "credentialProfile": "demo-client",
+      "apiBaseUrl": "https://example.invalid/odata/Priority/demo.ini/demo/",
+      "apiHeaders": {
+        "Accept": "application/json"
+      },
+      "company": "demo"
+    },
+    "prod": {
+      "credentialProfile": "company-client-prod",
+      "apiBaseUrl": "https://example.priority-software.com/odata/Priority/tabula.ini/company",
+      "apiHeaders": {
+        "Accept": "application/json"
+      },
+      "company": "COMPANY"
+    }
+  },
+  "developmentPrefix": "DEMO_",
+  "customTablePrefix": "XX_",
+  "customFieldPrefix": "XX_",
+  "customProcedurePrefix": "XX_",
+  "customFormPrefix": "XX_",
+  "language": "he",
+  "defaultBranch": "main",
+  "localPaths": {
+    "metadata": "metadata",
+    "memory": "memory",
+    "specs": "specs",
+    "developments": "developments",
+    "tests": "tests"
+  },
+  "metadataCachePolicy": {
+    "preferLocal": true,
+    "refreshAfterDays": 7
+  },
+  "readBudget": {
+    "monthlyLimit": 27000,
+    "warnAtPercent": 70
+  },
+  "sampleDataPolicy": {
+    "defaultTop": 5,
+    "maxTopWithoutApproval": 20,
+    "storeSamples": false,
+    "maskSensitiveFields": true
+  }
+}

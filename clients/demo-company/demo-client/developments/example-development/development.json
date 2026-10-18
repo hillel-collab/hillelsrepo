@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../../../schemas/development.schema.json",
+  "developmentId": "example-development",
+  "displayName": "שם הפרויקט ב-ClickUp",
+  "clickupTaskId": "abc123",
+  "targetEnvironments": ["dev", "prod"]
+}
